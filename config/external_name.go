@@ -10,7 +10,29 @@ import "github.com/crossplane/upjet/pkg/config"
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
 	// Import requires using a randomly generated ID from provider: nl-2e21sda
-	"null_resource": config.IdentifierFromProvider,
+	"null_resource":                 config.IdentifierFromProvider,
+	"hcloud_firewall":               config.IdentifierFromProvider,
+	"hcloud_firewall_attachment":    config.IdentifierFromProvider,
+	"hcloud_floating_ip":            config.IdentifierFromProvider,
+	"hcloud_floating_ip_assignment": config.IdentifierFromProvider,
+	"hcloud_load_balancer":          config.IdentifierFromProvider,
+	"hcloud_load_balancer_network":  config.IdentifierFromProvider,
+	"hcloud_load_balancer_service":  config.IdentifierFromProvider,
+	"hcloud_load_balancer_target":   config.IdentifierFromProvider,
+	"hcloud_managed_certificate":    config.IdentifierFromProvider,
+	"hcloud_network":                config.IdentifierFromProvider,
+	"hcloud_network_route":          config.IdentifierFromProvider,
+	"hcloud_network_subnet":         config.IdentifierFromProvider,
+	"hcloud_placement_group":        config.IdentifierFromProvider,
+	"hcloud_primary_ip":             config.IdentifierFromProvider,
+	"hcloud_rdns":                   config.IdentifierFromProvider,
+	"hcloud_server":                 config.IdentifierFromProvider,
+	"hcloud_server_network":         config.IdentifierFromProvider,
+	"hcloud_snapshot":               config.IdentifierFromProvider,
+	"hcloud_ssh_key":                config.IdentifierFromProvider,
+	"hcloud_uploaded_certificate":   config.IdentifierFromProvider,
+	"hcloud_volume":                 config.IdentifierFromProvider,
+	"hcloud_volume_attachment":      config.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the

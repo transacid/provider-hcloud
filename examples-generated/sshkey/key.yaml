@@ -1,0 +1,12 @@
+apiVersion: sshkey.hcloud.upbound.io/v1alpha1
+kind: Key
+metadata:
+  annotations:
+    meta.upbound.io/example-id: sshkey/v1alpha1/key
+  labels:
+    testing.upbound.io/example-name: default
+  name: default
+spec:
+  forProvider:
+    name: Terraform Example
+    publicKey: ${file("~/.ssh/id_rsa.pub")}

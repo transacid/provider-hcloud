@@ -1,0 +1,44 @@
+apiVersion: floatingipassignment.hcloud.upbound.io/v1alpha1
+kind: IPAssignment
+metadata:
+  annotations:
+    meta.upbound.io/example-id: floatingipassignment/v1alpha1/ipassignment
+  labels:
+    testing.upbound.io/example-name: main
+  name: main
+spec:
+  forProvider:
+    floatingIpId: ${hcloud_floating_ip.master.id}
+    serverId: ${hcloud_server.node1.id}
+
+---
+
+apiVersion: floatingip.hcloud.upbound.io/v1alpha1
+kind: IP
+metadata:
+  annotations:
+    meta.upbound.io/example-id: floatingipassignment/v1alpha1/ipassignment
+  labels:
+    testing.upbound.io/example-name: master
+  name: master
+spec:
+  forProvider:
+    homeLocation: nbg1
+    type: ipv4
+
+---
+
+apiVersion: server.hcloud.upbound.io/v1alpha1
+kind: Server
+metadata:
+  annotations:
+    meta.upbound.io/example-id: floatingipassignment/v1alpha1/ipassignment
+  labels:
+    testing.upbound.io/example-name: node1
+  name: node1
+spec:
+  forProvider:
+    datacenter: fsn1-dc8
+    image: debian-11
+    name: node1
+    serverType: cx11
