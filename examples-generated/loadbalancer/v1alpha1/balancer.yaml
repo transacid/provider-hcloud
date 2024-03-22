@@ -1,0 +1,32 @@
+apiVersion: loadbalancer.hcloud.upbound.io/v1alpha1
+kind: Balancer
+metadata:
+  annotations:
+    meta.upbound.io/example-id: loadbalancer/v1alpha1/balancer
+  labels:
+    testing.upbound.io/example-name: load_balancer
+  name: load-balancer
+spec:
+  forProvider:
+    loadBalancerType: lb11
+    location: nbg1
+    name: my-load-balancer
+    target:
+    - serverId: ${hcloud_server.myserver.id}
+      type: server
+
+---
+
+apiVersion: server.hcloud.upbound.io/v1alpha1
+kind: Server
+metadata:
+  annotations:
+    meta.upbound.io/example-id: loadbalancer/v1alpha1/balancer
+  labels:
+    testing.upbound.io/example-name: myserver
+  name: myserver
+spec:
+  forProvider:
+    image: ubuntu-18.04
+    name: server-%d
+    serverType: cx11

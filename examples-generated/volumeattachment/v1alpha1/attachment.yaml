@@ -1,0 +1,45 @@
+apiVersion: volumeattachment.hcloud.upbound.io/v1alpha1
+kind: Attachment
+metadata:
+  annotations:
+    meta.upbound.io/example-id: volumeattachment/v1alpha1/attachment
+  labels:
+    testing.upbound.io/example-name: main
+  name: main
+spec:
+  forProvider:
+    automount: true
+    serverId: ${hcloud_server.node1.id}
+    volumeId: ${hcloud_volume.master.id}
+
+---
+
+apiVersion: server.hcloud.upbound.io/v1alpha1
+kind: Server
+metadata:
+  annotations:
+    meta.upbound.io/example-id: volumeattachment/v1alpha1/attachment
+  labels:
+    testing.upbound.io/example-name: node1
+  name: node1
+spec:
+  forProvider:
+    datacenter: nbg1-dc3
+    image: debian-11
+    name: node1
+    serverType: cx11
+
+---
+
+apiVersion: volume.hcloud.upbound.io/v1alpha1
+kind: Volume
+metadata:
+  annotations:
+    meta.upbound.io/example-id: volumeattachment/v1alpha1/attachment
+  labels:
+    testing.upbound.io/example-name: master
+  name: master
+spec:
+  forProvider:
+    location: nbg1
+    size: 10

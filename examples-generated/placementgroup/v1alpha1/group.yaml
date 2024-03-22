@@ -1,0 +1,31 @@
+apiVersion: placementgroup.hcloud.upbound.io/v1alpha1
+kind: Group
+metadata:
+  annotations:
+    meta.upbound.io/example-id: placementgroup/v1alpha1/group
+  labels:
+    testing.upbound.io/example-name: my-placement-group
+  name: my-placement-group
+spec:
+  forProvider:
+    labels:
+      key: value
+    name: my-placement-group
+    type: spread
+
+---
+
+apiVersion: server.hcloud.upbound.io/v1alpha1
+kind: Server
+metadata:
+  annotations:
+    meta.upbound.io/example-id: placementgroup/v1alpha1/group
+  labels:
+    testing.upbound.io/example-name: node1
+  name: node1
+spec:
+  forProvider:
+    image: debian-11
+    name: node1
+    placementGroupId: ${hcloud_placement_group.my-placement-group.id}
+    serverType: cx11
