@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -58,6 +54,7 @@ type FirewallInitParameters struct {
 	ApplyTo []ApplyToInitParameters `json:"applyTo,omitempty" tf:"apply_to,omitempty"`
 
 	// User-defined labels (key-value pairs) should be created with.
+	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
 	// Name of the Firewall.
@@ -76,6 +73,7 @@ type FirewallObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// User-defined labels (key-value pairs) should be created with.
+	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
 	// Name of the Firewall.
@@ -93,6 +91,7 @@ type FirewallParameters struct {
 
 	// User-defined labels (key-value pairs) should be created with.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
 	// Name of the Firewall.
@@ -111,6 +110,7 @@ type RuleInitParameters struct {
 
 	// List of CIDRs that are allowed within this Firewall Rule (when direction
 	// is out)
+	// +listType=set
 	DestinationIps []*string `json:"destinationIps,omitempty" tf:"destination_ips,omitempty"`
 
 	// Direction of the Firewall Rule. in
@@ -125,6 +125,7 @@ type RuleInitParameters struct {
 	Protocol *string `json:"protocol,omitempty" tf:"protocol,omitempty"`
 
 	// List of CIDRs that are allowed within this Firewall Rule
+	// +listType=set
 	SourceIps []*string `json:"sourceIps,omitempty" tf:"source_ips,omitempty"`
 }
 
@@ -135,6 +136,7 @@ type RuleObservation struct {
 
 	// List of CIDRs that are allowed within this Firewall Rule (when direction
 	// is out)
+	// +listType=set
 	DestinationIps []*string `json:"destinationIps,omitempty" tf:"destination_ips,omitempty"`
 
 	// Direction of the Firewall Rule. in
@@ -149,6 +151,7 @@ type RuleObservation struct {
 	Protocol *string `json:"protocol,omitempty" tf:"protocol,omitempty"`
 
 	// List of CIDRs that are allowed within this Firewall Rule
+	// +listType=set
 	SourceIps []*string `json:"sourceIps,omitempty" tf:"source_ips,omitempty"`
 }
 
@@ -161,6 +164,7 @@ type RuleParameters struct {
 	// List of CIDRs that are allowed within this Firewall Rule (when direction
 	// is out)
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	DestinationIps []*string `json:"destinationIps,omitempty" tf:"destination_ips,omitempty"`
 
 	// Direction of the Firewall Rule. in
@@ -179,6 +183,7 @@ type RuleParameters struct {
 
 	// List of CIDRs that are allowed within this Firewall Rule
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	SourceIps []*string `json:"sourceIps,omitempty" tf:"source_ips,omitempty"`
 }
 
@@ -206,13 +211,14 @@ type FirewallStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Firewall is the Schema for the Firewalls API. Provides a Hetzner Cloud Firewall to represent a Firewall in the Hetzner Cloud.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,hcloud}
 type Firewall struct {
 	metav1.TypeMeta   `json:",inline"`

@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -20,6 +16,7 @@ import (
 type NetworkInitParameters struct {
 
 	// Alias IPs the server should have in the Network.
+	// +listType=set
 	AliasIps []*string `json:"aliasIps,omitempty" tf:"alias_ips,omitempty"`
 
 	// Specify the IP the server should get in the network
@@ -32,6 +29,7 @@ type NetworkInitParameters struct {
 type NetworkObservation struct {
 
 	// Alias IPs the server should have in the Network.
+	// +listType=set
 	AliasIps []*string `json:"aliasIps,omitempty" tf:"alias_ips,omitempty"`
 
 	// Specify the IP the server should get in the network
@@ -48,6 +46,7 @@ type NetworkParameters struct {
 
 	// Alias IPs the server should have in the Network.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	AliasIps []*string `json:"aliasIps,omitempty" tf:"alias_ips,omitempty"`
 
 	// Specify the IP the server should get in the network
@@ -109,6 +108,7 @@ type ServerInitParameters struct {
 	DeleteProtection *bool `json:"deleteProtection,omitempty" tf:"delete_protection,omitempty"`
 
 	// Firewall IDs the server should be attached to on creation.
+	// +listType=set
 	FirewallIds []*float64 `json:"firewallIds,omitempty" tf:"firewall_ids,omitempty"`
 
 	// Ignores any updates
@@ -128,6 +128,7 @@ type ServerInitParameters struct {
 	KeepDisk *bool `json:"keepDisk,omitempty" tf:"keep_disk,omitempty"`
 
 	// User-defined labels (key-value pairs) should be created with.
+	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
 	// The location name to create the server in. nbg1, fsn1, hel1, ash or hil
@@ -135,6 +136,9 @@ type ServerInitParameters struct {
 
 	// Name of the server to create (must be unique per project and a valid hostname as per RFC 1123).
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Network the server should be attached to on creation. (Can be specified multiple times)
+	Network []NetworkInitParameters `json:"network,omitempty" tf:"network,omitempty"`
 
 	// Placement Group ID the server added to on creation.
 	PlacementGroupID *float64 `json:"placementGroupId,omitempty" tf:"placement_group_id,omitempty"`
@@ -180,6 +184,7 @@ type ServerObservation struct {
 	DeleteProtection *bool `json:"deleteProtection,omitempty" tf:"delete_protection,omitempty"`
 
 	// Firewall IDs the server should be attached to on creation.
+	// +listType=set
 	FirewallIds []*float64 `json:"firewallIds,omitempty" tf:"firewall_ids,omitempty"`
 
 	// (int) Unique ID of the server.
@@ -211,6 +216,7 @@ type ServerObservation struct {
 	KeepDisk *bool `json:"keepDisk,omitempty" tf:"keep_disk,omitempty"`
 
 	// User-defined labels (key-value pairs) should be created with.
+	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
 	// The location name to create the server in. nbg1, fsn1, hel1, ash or hil
@@ -274,6 +280,7 @@ type ServerParameters struct {
 
 	// Firewall IDs the server should be attached to on creation.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	FirewallIds []*float64 `json:"firewallIds,omitempty" tf:"firewall_ids,omitempty"`
 
 	// Ignores any updates
@@ -298,6 +305,7 @@ type ServerParameters struct {
 
 	// User-defined labels (key-value pairs) should be created with.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
 	// The location name to create the server in. nbg1, fsn1, hel1, ash or hil
@@ -309,17 +317,8 @@ type ServerParameters struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// Network the server should be attached to on creation. (Can be specified multiple times)
-	// +crossplane:generate:reference:type=github.com/transacid/provider-hcloud/apis/network/v1alpha1.Network
 	// +kubebuilder:validation:Optional
 	Network []NetworkParameters `json:"network,omitempty" tf:"network,omitempty"`
-
-	// References to Network in network to populate network.
-	// +kubebuilder:validation:Optional
-	NetworkRefs []v1.Reference `json:"networkRefs,omitempty" tf:"-"`
-
-	// Selector for a list of Network in network to populate network.
-	// +kubebuilder:validation:Optional
-	NetworkSelector *v1.Selector `json:"networkSelector,omitempty" tf:"-"`
 
 	// Placement Group ID the server added to on creation.
 	// +kubebuilder:validation:Optional
@@ -379,13 +378,14 @@ type ServerStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Server is the Schema for the Servers API. Provides an Hetzner Cloud server resource. This can be used to create, modify, and delete servers. Servers also support provisioning.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,hcloud}
 type Server struct {
 	metav1.TypeMeta   `json:",inline"`

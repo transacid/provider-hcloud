@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -29,6 +25,7 @@ type VolumeInitParameters struct {
 	Format *string `json:"format,omitempty" tf:"format,omitempty"`
 
 	// (map) User-defined labels (key-value pairs).
+	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
 	// The location name of the volume to create, not allowed if server_id argument is passed.
@@ -59,6 +56,7 @@ type VolumeObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// (map) User-defined labels (key-value pairs).
+	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
 	// (string) Device path on the file system for the Volume.
@@ -93,6 +91,7 @@ type VolumeParameters struct {
 
 	// (map) User-defined labels (key-value pairs).
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
 	// The location name of the volume to create, not allowed if server_id argument is passed.
@@ -136,13 +135,14 @@ type VolumeStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Volume is the Schema for the Volumes API. Provides a Hetzner Cloud volume resource to manage volumes.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,hcloud}
 type Volume struct {
 	metav1.TypeMeta   `json:",inline"`

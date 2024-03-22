@@ -9,7 +9,6 @@ Copyright 2022 Upbound Inc.
 package v1alpha1
 
 import (
-	"github.com/crossplane/crossplane-runtime/apis/common/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -337,6 +336,13 @@ func (in *ServerInitParameters) DeepCopyInto(out *ServerInitParameters) {
 		in, out := &in.Name, &out.Name
 		*out = new(string)
 		**out = **in
+	}
+	if in.Network != nil {
+		in, out := &in.Network, &out.Network
+		*out = make([]NetworkInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.PlacementGroupID != nil {
 		in, out := &in.PlacementGroupID, &out.PlacementGroupID
@@ -698,18 +704,6 @@ func (in *ServerParameters) DeepCopyInto(out *ServerParameters) {
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
-	}
-	if in.NetworkRefs != nil {
-		in, out := &in.NetworkRefs, &out.NetworkRefs
-		*out = make([]v1.Reference, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
-	}
-	if in.NetworkSelector != nil {
-		in, out := &in.NetworkSelector, &out.NetworkSelector
-		*out = new(v1.Selector)
-		(*in).DeepCopyInto(*out)
 	}
 	if in.PlacementGroupID != nil {
 		in, out := &in.PlacementGroupID, &out.PlacementGroupID

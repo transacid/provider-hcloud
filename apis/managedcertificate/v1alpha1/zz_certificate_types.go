@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -21,10 +17,12 @@ type CertificateInitParameters struct {
 
 	// Domain names for which a certificate
 	// should be obtained.
+	// +listType=set
 	DomainNames []*string `json:"domainNames,omitempty" tf:"domain_names,omitempty"`
 
 	// User-defined labels (key-value pairs) the
 	// certificate should be created with.
+	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
 	// Name of the Certificate.
@@ -41,6 +39,7 @@ type CertificateObservation struct {
 
 	// Domain names for which a certificate
 	// should be obtained.
+	// +listType=set
 	DomainNames []*string `json:"domainNames,omitempty" tf:"domain_names,omitempty"`
 
 	// (string) Fingerprint of the certificate.
@@ -51,6 +50,7 @@ type CertificateObservation struct {
 
 	// User-defined labels (key-value pairs) the
 	// certificate should be created with.
+	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
 	// Name of the Certificate.
@@ -70,11 +70,13 @@ type CertificateParameters struct {
 	// Domain names for which a certificate
 	// should be obtained.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	DomainNames []*string `json:"domainNames,omitempty" tf:"domain_names,omitempty"`
 
 	// User-defined labels (key-value pairs) the
 	// certificate should be created with.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
 	// Name of the Certificate.
@@ -106,13 +108,14 @@ type CertificateStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Certificate is the Schema for the Certificates API. Obtain a TLS Certificate managed by Hetzner Cloud.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,hcloud}
 type Certificate struct {
 	metav1.TypeMeta   `json:",inline"`

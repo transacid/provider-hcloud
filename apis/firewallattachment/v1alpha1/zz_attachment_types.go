@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -25,10 +21,12 @@ type AttachmentInitParameters struct {
 
 	// List of label selectors used to
 	// select resources to attach to the firewall.
+	// +listType=set
 	LabelSelectors []*string `json:"labelSelectors,omitempty" tf:"label_selectors,omitempty"`
 
 	// List of Server IDs to attach to the
 	// firewall.
+	// +listType=set
 	ServerIds []*float64 `json:"serverIds,omitempty" tf:"server_ids,omitempty"`
 }
 
@@ -43,10 +41,12 @@ type AttachmentObservation struct {
 
 	// List of label selectors used to
 	// select resources to attach to the firewall.
+	// +listType=set
 	LabelSelectors []*string `json:"labelSelectors,omitempty" tf:"label_selectors,omitempty"`
 
 	// List of Server IDs to attach to the
 	// firewall.
+	// +listType=set
 	ServerIds []*float64 `json:"serverIds,omitempty" tf:"server_ids,omitempty"`
 }
 
@@ -60,11 +60,13 @@ type AttachmentParameters struct {
 	// List of label selectors used to
 	// select resources to attach to the firewall.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	LabelSelectors []*string `json:"labelSelectors,omitempty" tf:"label_selectors,omitempty"`
 
 	// List of Server IDs to attach to the
 	// firewall.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	ServerIds []*float64 `json:"serverIds,omitempty" tf:"server_ids,omitempty"`
 }
 
@@ -92,13 +94,14 @@ type AttachmentStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Attachment is the Schema for the Attachments API. Attaches resources to a Hetzner Cloud Firewall.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,hcloud}
 type Attachment struct {
 	metav1.TypeMeta   `json:",inline"`

@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -20,6 +16,7 @@ import (
 type BalancerServiceHTTPInitParameters struct {
 
 	// List of IDs from certificates which the Load Balancer has.
+	// +listType=set
 	Certificates []*float64 `json:"certificates,omitempty" tf:"certificates,omitempty"`
 
 	// Lifetime of the cookie for sticky session (in seconds). Default: 300
@@ -38,6 +35,7 @@ type BalancerServiceHTTPInitParameters struct {
 type BalancerServiceHTTPObservation struct {
 
 	// List of IDs from certificates which the Load Balancer has.
+	// +listType=set
 	Certificates []*float64 `json:"certificates,omitempty" tf:"certificates,omitempty"`
 
 	// Lifetime of the cookie for sticky session (in seconds). Default: 300
@@ -57,6 +55,7 @@ type BalancerServiceHTTPParameters struct {
 
 	// List of IDs from certificates which the Load Balancer has.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Certificates []*float64 `json:"certificates,omitempty" tf:"certificates,omitempty"`
 
 	// Lifetime of the cookie for sticky session (in seconds). Default: 300
@@ -309,13 +308,14 @@ type BalancerServiceStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // BalancerService is the Schema for the BalancerServices API. Define services for Hetzner Cloud Load Balancers.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,hcloud}
 type BalancerService struct {
 	metav1.TypeMeta   `json:",inline"`

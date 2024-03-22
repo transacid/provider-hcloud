@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -21,6 +17,7 @@ type NetworkInitParameters struct {
 
 	// Additional IPs to be assigned
 	// to this server.
+	// +listType=set
 	AliasIps []*string `json:"aliasIps,omitempty" tf:"alias_ips,omitempty"`
 
 	// IP to request to be assigned to this server.
@@ -52,6 +49,7 @@ type NetworkObservation struct {
 
 	// Additional IPs to be assigned
 	// to this server.
+	// +listType=set
 	AliasIps []*string `json:"aliasIps,omitempty" tf:"alias_ips,omitempty"`
 
 	// (string) ID of the server network.
@@ -89,6 +87,7 @@ type NetworkParameters struct {
 	// Additional IPs to be assigned
 	// to this server.
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	AliasIps []*string `json:"aliasIps,omitempty" tf:"alias_ips,omitempty"`
 
 	// IP to request to be assigned to this server.
@@ -144,13 +143,14 @@ type NetworkStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Network is the Schema for the Networks API. Provides a Hetzner Cloud Server Network to represent a private network on a server in the Hetzner Cloud.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,hcloud}
 type Network struct {
 	metav1.TypeMeta   `json:",inline"`

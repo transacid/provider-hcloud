@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -36,6 +32,7 @@ type IPInitParameters struct {
 	DeleteProtection *bool `json:"deleteProtection,omitempty" tf:"delete_protection,omitempty"`
 
 	// (string) Description of the Primary IP.
+	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
 	// (string) Name of the Primary IP.
@@ -73,6 +70,7 @@ type IPObservation struct {
 	IPNetwork *string `json:"ipNetwork,omitempty" tf:"ip_network,omitempty"`
 
 	// (string) Description of the Primary IP.
+	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
 	// (string) Name of the Primary IP.
@@ -107,6 +105,7 @@ type IPParameters struct {
 
 	// (string) Description of the Primary IP.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
 	// (string) Name of the Primary IP.
@@ -142,13 +141,14 @@ type IPStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // IP is the Schema for the IPs API. Provides a Hetzner Cloud Primary IP to represent a publicly-accessible static IP address that can be mapped to one of your servers.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,hcloud}
 type IP struct {
 	metav1.TypeMeta   `json:",inline"`

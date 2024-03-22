@@ -1,7 +1,3 @@
-// SPDX-FileCopyrightText: 2023 The Crossplane Authors <https://crossplane.io>
-//
-// SPDX-License-Identifier: Apache-2.0
-
 /*
 Copyright 2022 Upbound Inc.
 */
@@ -30,6 +26,7 @@ type NetworkInitParameters struct {
 	IPRange *string `json:"ipRange,omitempty" tf:"ip_range,omitempty"`
 
 	// User-defined labels (key-value pairs) should be created with.
+	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
 	// Name of the Network to create (must be unique per project).
@@ -52,6 +49,7 @@ type NetworkObservation struct {
 	IPRange *string `json:"ipRange,omitempty" tf:"ip_range,omitempty"`
 
 	// User-defined labels (key-value pairs) should be created with.
+	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
 	// Name of the Network to create (must be unique per project).
@@ -75,6 +73,7 @@ type NetworkParameters struct {
 
 	// User-defined labels (key-value pairs) should be created with.
 	// +kubebuilder:validation:Optional
+	// +mapType=granular
 	Labels map[string]*string `json:"labels,omitempty" tf:"labels,omitempty"`
 
 	// Name of the Network to create (must be unique per project).
@@ -106,13 +105,14 @@ type NetworkStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Network is the Schema for the Networks API. Provides a Hetzner Cloud Network to represent a Network in the Hetzner Cloud.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,hcloud}
 type Network struct {
 	metav1.TypeMeta   `json:",inline"`
