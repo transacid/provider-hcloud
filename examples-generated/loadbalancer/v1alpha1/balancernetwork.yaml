@@ -1,0 +1,67 @@
+apiVersion: loadbalancer.hcloud.crossplane.io/v1alpha1
+kind: BalancerNetwork
+metadata:
+  annotations:
+    meta.upbound.io/example-id: loadbalancer/v1alpha1/balancernetwork
+  labels:
+    testing.upbound.io/example-name: srvnetwork
+  name: srvnetwork
+spec:
+  forProvider:
+    ip: 10.0.1.5
+    loadBalancerIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: lb1
+    networkIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: mynet
+
+---
+
+apiVersion: loadbalancer.hcloud.crossplane.io/v1alpha1
+kind: Balancer
+metadata:
+  annotations:
+    meta.upbound.io/example-id: loadbalancer/v1alpha1/balancernetwork
+  labels:
+    testing.upbound.io/example-name: lb1
+  name: lb1
+spec:
+  forProvider:
+    loadBalancerType: lb11
+    name: lb1
+    networkZone: eu-central
+
+---
+
+apiVersion: network.hcloud.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: loadbalancer/v1alpha1/balancernetwork
+  labels:
+    testing.upbound.io/example-name: mynet
+  name: mynet
+spec:
+  forProvider:
+    ipRange: 10.0.0.0/8
+    name: my-net
+
+---
+
+apiVersion: network.hcloud.crossplane.io/v1alpha1
+kind: Subnet
+metadata:
+  annotations:
+    meta.upbound.io/example-id: loadbalancer/v1alpha1/balancernetwork
+  labels:
+    testing.upbound.io/example-name: foonet
+  name: foonet
+spec:
+  forProvider:
+    ipRange: 10.0.1.0/24
+    networkIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: mynet
+    networkZone: eu-central
+    type: cloud

@@ -1,0 +1,38 @@
+apiVersion: primaryip.hcloud.crossplane.io/v1alpha1
+kind: IP
+metadata:
+  annotations:
+    meta.upbound.io/example-id: primaryip/v1alpha1/ip
+  labels:
+    testing.upbound.io/example-name: main
+  name: main
+spec:
+  forProvider:
+    assigneeType: server
+    autoDelete: true
+    datacenter: fsn1-dc14
+    labels:
+      hallo: welt
+    name: primary_ip_test
+    type: ipv4
+
+---
+
+apiVersion: server.hcloud.crossplane.io/v1alpha1
+kind: Server
+metadata:
+  annotations:
+    meta.upbound.io/example-id: primaryip/v1alpha1/ip
+  labels:
+    testing.upbound.io/example-name: server_test
+  name: server-test
+spec:
+  forProvider:
+    datacenter: fsn1-dc14
+    image: ubuntu-20.04
+    labels:
+      test: tessst1
+    name: test-server
+    publicNet:
+    - ipv4: ${hcloud_primary_ip.main.id}
+    serverType: cx22
