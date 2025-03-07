@@ -1,0 +1,24 @@
+apiVersion: uploaded.hcloud.crossplane.io/v1alpha1
+kind: Certificate
+metadata:
+  annotations:
+    meta.upbound.io/example-id: uploaded/v1alpha1/certificate
+  labels:
+    testing.upbound.io/example-name: sample_certificate
+  name: sample-certificate
+spec:
+  forProvider:
+    certificate: |
+      -----BEGIN CERTIFICATE-----
+      MIIDMDCCAhigAwIBAgIIJgROscP8RRUwDQYJKoZIhvcNAQELBQAwIDEeMBwGA1UE
+      ...
+      TKS8gQ==
+      -----END CERTIFICATE-----
+    labels:
+      label_1: value_1
+      label_2: value_2
+    name: test-certificate-%d
+    privateKeySecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system

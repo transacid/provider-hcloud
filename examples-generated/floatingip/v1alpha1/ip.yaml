@@ -1,0 +1,28 @@
+apiVersion: floatingip.hcloud.crossplane.io/v1alpha1
+kind: IP
+metadata:
+  annotations:
+    meta.upbound.io/example-id: floatingip/v1alpha1/ip
+  labels:
+    testing.upbound.io/example-name: master
+  name: master
+spec:
+  forProvider:
+    serverId: ${hcloud_server.node1.id}
+    type: ipv4
+
+---
+
+apiVersion: server.hcloud.crossplane.io/v1alpha1
+kind: Server
+metadata:
+  annotations:
+    meta.upbound.io/example-id: floatingip/v1alpha1/ip
+  labels:
+    testing.upbound.io/example-name: node1
+  name: node1
+spec:
+  forProvider:
+    image: debian-11
+    name: node1
+    serverType: cx22

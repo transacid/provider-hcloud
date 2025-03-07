@@ -1,0 +1,45 @@
+apiVersion: loadbalancer.hcloud.crossplane.io/v1alpha1
+kind: Balancer
+metadata:
+  annotations:
+    meta.upbound.io/example-id: loadbalancer/v1alpha1/balancer
+  labels:
+    testing.upbound.io/example-name: load_balancer
+  name: load-balancer
+spec:
+  forProvider:
+    loadBalancerType: lb11
+    location: nbg1
+    name: my-load-balancer
+
+---
+
+apiVersion: loadbalancer.hcloud.crossplane.io/v1alpha1
+kind: BalancerTarget
+metadata:
+  annotations:
+    meta.upbound.io/example-id: loadbalancer/v1alpha1/balancer
+  labels:
+    testing.upbound.io/example-name: load_balancer_target
+  name: load-balancer-target
+spec:
+  forProvider:
+    loadBalancerId: ${hcloud_load_balancer.load_balancer.id}
+    serverId: ${hcloud_server.my_server.id}
+    type: server
+
+---
+
+apiVersion: server.hcloud.crossplane.io/v1alpha1
+kind: Server
+metadata:
+  annotations:
+    meta.upbound.io/example-id: loadbalancer/v1alpha1/balancer
+  labels:
+    testing.upbound.io/example-name: my_server
+  name: my-server
+spec:
+  forProvider:
+    image: ubuntu-18.04
+    name: server-%d
+    serverType: cx22

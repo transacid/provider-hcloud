@@ -1,4 +1,4 @@
-module github.com/upbound/upjet-provider-template
+module github.com/transacid/provider-hcloud
 
 go 1.21
 

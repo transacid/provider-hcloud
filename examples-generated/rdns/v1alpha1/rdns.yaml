@@ -1,0 +1,29 @@
+apiVersion: rdns.hcloud.crossplane.io/v1alpha1
+kind: Rdns
+metadata:
+  annotations:
+    meta.upbound.io/example-id: rdns/v1alpha1/rdns
+  labels:
+    testing.upbound.io/example-name: master
+  name: master
+spec:
+  forProvider:
+    dnsPtr: example.com
+    ipAddress: ${hcloud_server.node1.ipv4_address}
+    serverId: ${hcloud_server.node1.id}
+
+---
+
+apiVersion: server.hcloud.crossplane.io/v1alpha1
+kind: Server
+metadata:
+  annotations:
+    meta.upbound.io/example-id: rdns/v1alpha1/rdns
+  labels:
+    testing.upbound.io/example-name: node1
+  name: node1
+spec:
+  forProvider:
+    image: debian-11
+    name: node1
+    serverType: cx22

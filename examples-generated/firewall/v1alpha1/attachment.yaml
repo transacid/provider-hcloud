@@ -1,0 +1,43 @@
+apiVersion: firewall.hcloud.crossplane.io/v1alpha1
+kind: Attachment
+metadata:
+  annotations:
+    meta.upbound.io/example-id: firewall/v1alpha1/attachment
+  labels:
+    testing.upbound.io/example-name: fw_ref
+  name: fw-ref
+spec:
+  forProvider:
+    firewallId: ${hcloud_firewall.basic_firewall.id}
+    serverIdsRefs:
+    - name: test_server
+
+---
+
+apiVersion: firewall.hcloud.crossplane.io/v1alpha1
+kind: Firewall
+metadata:
+  annotations:
+    meta.upbound.io/example-id: firewall/v1alpha1/attachment
+  labels:
+    testing.upbound.io/example-name: basic_firewall
+  name: basic-firewall
+spec:
+  forProvider:
+    name: basic_firewall
+
+---
+
+apiVersion: server.hcloud.crossplane.io/v1alpha1
+kind: Server
+metadata:
+  annotations:
+    meta.upbound.io/example-id: firewall/v1alpha1/attachment
+  labels:
+    testing.upbound.io/example-name: test_server
+  name: test-server
+spec:
+  forProvider:
+    image: ubuntu-20.04
+    name: test-server
+    serverType: cx22
