@@ -108,12 +108,12 @@ linters:
     - govet
     - gocyclo
     - gocritic
-    - interfacer
+    # - interfacer
     - goconst
     - goimports
     - gofmt  # We enable this as well as goimports for its simplify mode.
     - prealloc
-    - golint
+    # - golint
     - unconvert
     - misspell
     - nakedret
