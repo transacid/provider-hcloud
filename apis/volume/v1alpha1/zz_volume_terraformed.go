@@ -8,10 +8,9 @@ package v1alpha1
 
 import (
 	"dario.cat/mergo"
-	"github.com/pkg/errors"
-
 	"github.com/crossplane/upjet/pkg/resource"
 	"github.com/crossplane/upjet/pkg/resource/json"
+	"github.com/pkg/errors"
 )
 
 // GetTerraformResourceType returns Terraform resource type for this Volume

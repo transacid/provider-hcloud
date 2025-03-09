@@ -5,10 +5,10 @@ Copyright 2021 Upbound Inc.
 package config
 
 import (
+	ujconfig "github.com/crossplane/upjet/pkg/config"
+
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
-
-	ujconfig "github.com/crossplane/upjet/pkg/config"
 )
 
 const (
