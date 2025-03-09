@@ -89,6 +89,7 @@ resources:
                 }
               references:
                 firewall_id: hcloud_firewall.basic_firewall.id
+                server_ids: hcloud_server.test_server.id
               dependencies:
                 hcloud_firewall.basic_firewall: |-
                     {
@@ -134,6 +135,7 @@ resources:
                 }
               references:
                 firewall_id: hcloud_firewall.deny_all.id
+                server_ids: hcloud_server.test_server.id
               dependencies:
                 hcloud_firewall.allow_rules: |-
                     {
@@ -177,6 +179,7 @@ resources:
                 }
               references:
                 firewall_id: hcloud_firewall.allow_rules.id
+                server_ids: hcloud_server.test_server.id
               dependencies:
                 hcloud_firewall.allow_rules: |-
                     {
