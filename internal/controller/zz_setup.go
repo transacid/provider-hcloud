@@ -5,8 +5,9 @@
 package controller
 
 import (
-	"github.com/crossplane/upjet/pkg/controller"
 	ctrl "sigs.k8s.io/controller-runtime"
+
+	"github.com/crossplane/upjet/pkg/controller"
 
 	attachment "github.com/transacid/provider-hcloud/internal/controller/firewall/attachment"
 	firewall "github.com/transacid/provider-hcloud/internal/controller/firewall/firewall"

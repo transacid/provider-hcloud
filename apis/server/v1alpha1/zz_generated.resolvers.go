@@ -8,13 +8,11 @@ package v1alpha1
 
 import (
 	"context"
-
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
 	errors "github.com/pkg/errors"
-	client "sigs.k8s.io/controller-runtime/pkg/client"
-
 	v1alpha1 "github.com/transacid/provider-hcloud/apis/network/v1alpha1"
 	v1alpha11 "github.com/transacid/provider-hcloud/apis/placementgroup/v1alpha1"
+	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // ResolveReferences of this Network.
