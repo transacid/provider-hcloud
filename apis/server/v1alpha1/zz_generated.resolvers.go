@@ -55,6 +55,22 @@ func (mg *Network) ResolveReferences(ctx context.Context, c client.Reader) error
 	mg.Spec.ForProvider.ServerIDRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.SubnetID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.SubnetIDRef,
+		Selector:     mg.Spec.ForProvider.SubnetIDSelector,
+		To: reference.To{
+			List:    &v1alpha1.SubnetList{},
+			Managed: &v1alpha1.Subnet{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.SubnetID")
+	}
+	mg.Spec.ForProvider.SubnetID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.SubnetIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromFloatPtrValue(mg.Spec.InitProvider.NetworkID),
 		Extract:      reference.ExternalName(),
 		Reference:    mg.Spec.InitProvider.NetworkIDRef,
@@ -86,6 +102,22 @@ func (mg *Network) ResolveReferences(ctx context.Context, c client.Reader) error
 	mg.Spec.InitProvider.ServerID = reference.ToFloatPtrValue(rsp.ResolvedValue)
 	mg.Spec.InitProvider.ServerIDRef = rsp.ResolvedReference
 
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.SubnetID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.SubnetIDRef,
+		Selector:     mg.Spec.InitProvider.SubnetIDSelector,
+		To: reference.To{
+			List:    &v1alpha1.SubnetList{},
+			Managed: &v1alpha1.Subnet{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.SubnetID")
+	}
+	mg.Spec.InitProvider.SubnetID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.SubnetIDRef = rsp.ResolvedReference
+
 	return nil
 }
 
@@ -96,6 +128,24 @@ func (mg *Server) ResolveReferences(ctx context.Context, c client.Reader) error 
 	var rsp reference.ResolutionResponse
 	var err error
 
+	for i3 := 0; i3 < len(mg.Spec.ForProvider.Network); i3++ {
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromFloatPtrValue(mg.Spec.ForProvider.Network[i3].NetworkID),
+			Extract:      reference.ExternalName(),
+			Reference:    mg.Spec.ForProvider.Network[i3].NetworkIDRef,
+			Selector:     mg.Spec.ForProvider.Network[i3].NetworkIDSelector,
+			To: reference.To{
+				List:    &v1alpha1.NetworkList{},
+				Managed: &v1alpha1.Network{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.ForProvider.Network[i3].NetworkID")
+		}
+		mg.Spec.ForProvider.Network[i3].NetworkID = reference.ToFloatPtrValue(rsp.ResolvedValue)
+		mg.Spec.ForProvider.Network[i3].NetworkIDRef = rsp.ResolvedReference
+
+	}
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromFloatPtrValue(mg.Spec.ForProvider.PlacementGroupID),
 		Extract:      reference.ExternalName(),
@@ -112,6 +162,24 @@ func (mg *Server) ResolveReferences(ctx context.Context, c client.Reader) error 
 	mg.Spec.ForProvider.PlacementGroupID = reference.ToFloatPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.PlacementGroupIDRef = rsp.ResolvedReference
 
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.Network); i3++ {
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromFloatPtrValue(mg.Spec.InitProvider.Network[i3].NetworkID),
+			Extract:      reference.ExternalName(),
+			Reference:    mg.Spec.InitProvider.Network[i3].NetworkIDRef,
+			Selector:     mg.Spec.InitProvider.Network[i3].NetworkIDSelector,
+			To: reference.To{
+				List:    &v1alpha1.NetworkList{},
+				Managed: &v1alpha1.Network{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.InitProvider.Network[i3].NetworkID")
+		}
+		mg.Spec.InitProvider.Network[i3].NetworkID = reference.ToFloatPtrValue(rsp.ResolvedValue)
+		mg.Spec.InitProvider.Network[i3].NetworkIDRef = rsp.ResolvedReference
+
+	}
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromFloatPtrValue(mg.Spec.InitProvider.PlacementGroupID),
 		Extract:      reference.ExternalName(),

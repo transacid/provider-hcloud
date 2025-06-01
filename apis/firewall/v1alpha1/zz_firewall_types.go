@@ -21,7 +21,16 @@ type ApplyToInitParameters struct {
 
 	// ID of the server you want to apply the firewall to (only one of server
 	// and label_selectorcan be applied in one block)
+	// +crossplane:generate:reference:type=github.com/transacid/provider-hcloud/apis/server/v1alpha1.Server
 	Server *float64 `json:"server,omitempty" tf:"server,omitempty"`
+
+	// Reference to a Server in server to populate server.
+	// +kubebuilder:validation:Optional
+	ServerRef *v1.Reference `json:"serverRef,omitempty" tf:"-"`
+
+	// Selector for a Server in server to populate server.
+	// +kubebuilder:validation:Optional
+	ServerSelector *v1.Selector `json:"serverSelector,omitempty" tf:"-"`
 }
 
 type ApplyToObservation struct {
@@ -44,8 +53,17 @@ type ApplyToParameters struct {
 
 	// ID of the server you want to apply the firewall to (only one of server
 	// and label_selectorcan be applied in one block)
+	// +crossplane:generate:reference:type=github.com/transacid/provider-hcloud/apis/server/v1alpha1.Server
 	// +kubebuilder:validation:Optional
 	Server *float64 `json:"server,omitempty" tf:"server,omitempty"`
+
+	// Reference to a Server in server to populate server.
+	// +kubebuilder:validation:Optional
+	ServerRef *v1.Reference `json:"serverRef,omitempty" tf:"-"`
+
+	// Selector for a Server in server to populate server.
+	// +kubebuilder:validation:Optional
+	ServerSelector *v1.Selector `json:"serverSelector,omitempty" tf:"-"`
 }
 
 type FirewallInitParameters struct {

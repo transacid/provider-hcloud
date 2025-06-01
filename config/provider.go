@@ -63,6 +63,9 @@ func GetProvider() *ujconfig.Provider {
 		))
 	pc.AddResourceConfigurator("hcloud_firewall", func(r *ujconfig.Resource) {
 		r.ShortGroup = "firewall"
+		r.References["apply_to.server"] = ujconfig.Reference{
+			TerraformName: "hcloud_server",
+		}
 	})
 	pc.AddResourceConfigurator("hcloud_uploaded_certificate", func(r *ujconfig.Resource) {})
 	pc.AddResourceConfigurator("hcloud_managed_certificate", func(r *ujconfig.Resource) {})
@@ -140,11 +143,11 @@ func GetProvider() *ujconfig.Provider {
 	})
 	pc.AddResourceConfigurator("hcloud_server", func(r *ujconfig.Resource) {
 		r.ShortGroup = "server"
-		r.References["network_id"] = ujconfig.Reference{
-			TerraformName: "hcloud_network",
-		}
 		r.References["firwall_ids"] = ujconfig.Reference{
 			TerraformName: "hcloud_firewall",
+		}
+		r.References["network.network_id"] = ujconfig.Reference{
+			TerraformName: "hcloud_network",
 		}
 		r.References["placement_group_id"] = ujconfig.Reference{
 			TerraformName: "hcloud_placement_group",
@@ -157,6 +160,9 @@ func GetProvider() *ujconfig.Provider {
 		}
 		r.References["network_id"] = ujconfig.Reference{
 			TerraformName: "hcloud_network",
+		}
+		r.References["subnet_id"] = ujconfig.Reference{
+			TerraformName: "hcloud_network_subnet",
 		}
 	})
 	pc.AddResourceConfigurator("hcloud_snapshot", func(r *ujconfig.Resource) {
