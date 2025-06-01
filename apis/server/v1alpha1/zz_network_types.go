@@ -60,7 +60,16 @@ type NetworkInitParameters_2 struct {
 	// added to the Server. Required if network_id is not set.
 	// Note: if the ip property is missing, the Server is currently added
 	// to the last created subnet.
+	// +crossplane:generate:reference:type=github.com/transacid/provider-hcloud/apis/network/v1alpha1.Subnet
 	SubnetID *string `json:"subnetId,omitempty" tf:"subnet_id,omitempty"`
+
+	// Reference to a Subnet in network to populate subnetId.
+	// +kubebuilder:validation:Optional
+	SubnetIDRef *v1.Reference `json:"subnetIdRef,omitempty" tf:"-"`
+
+	// Selector for a Subnet in network to populate subnetId.
+	// +kubebuilder:validation:Optional
+	SubnetIDSelector *v1.Selector `json:"subnetIdSelector,omitempty" tf:"-"`
 }
 
 type NetworkObservation_2 struct {
@@ -151,8 +160,17 @@ type NetworkParameters_2 struct {
 	// added to the Server. Required if network_id is not set.
 	// Note: if the ip property is missing, the Server is currently added
 	// to the last created subnet.
+	// +crossplane:generate:reference:type=github.com/transacid/provider-hcloud/apis/network/v1alpha1.Subnet
 	// +kubebuilder:validation:Optional
 	SubnetID *string `json:"subnetId,omitempty" tf:"subnet_id,omitempty"`
+
+	// Reference to a Subnet in network to populate subnetId.
+	// +kubebuilder:validation:Optional
+	SubnetIDRef *v1.Reference `json:"subnetIdRef,omitempty" tf:"-"`
+
+	// Selector for a Subnet in network to populate subnetId.
+	// +kubebuilder:validation:Optional
+	SubnetIDSelector *v1.Selector `json:"subnetIdSelector,omitempty" tf:"-"`
 }
 
 // NetworkSpec defines the desired state of Network

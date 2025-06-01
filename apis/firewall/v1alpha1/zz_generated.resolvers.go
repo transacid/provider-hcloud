@@ -55,3 +55,50 @@ func (mg *Attachment) ResolveReferences(ctx context.Context, c client.Reader) er
 
 	return nil
 }
+
+// ResolveReferences of this Firewall.
+func (mg *Firewall) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	for i3 := 0; i3 < len(mg.Spec.ForProvider.ApplyTo); i3++ {
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromFloatPtrValue(mg.Spec.ForProvider.ApplyTo[i3].Server),
+			Extract:      reference.ExternalName(),
+			Reference:    mg.Spec.ForProvider.ApplyTo[i3].ServerRef,
+			Selector:     mg.Spec.ForProvider.ApplyTo[i3].ServerSelector,
+			To: reference.To{
+				List:    &v1alpha1.ServerList{},
+				Managed: &v1alpha1.Server{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.ForProvider.ApplyTo[i3].Server")
+		}
+		mg.Spec.ForProvider.ApplyTo[i3].Server = reference.ToFloatPtrValue(rsp.ResolvedValue)
+		mg.Spec.ForProvider.ApplyTo[i3].ServerRef = rsp.ResolvedReference
+
+	}
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.ApplyTo); i3++ {
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromFloatPtrValue(mg.Spec.InitProvider.ApplyTo[i3].Server),
+			Extract:      reference.ExternalName(),
+			Reference:    mg.Spec.InitProvider.ApplyTo[i3].ServerRef,
+			Selector:     mg.Spec.InitProvider.ApplyTo[i3].ServerSelector,
+			To: reference.To{
+				List:    &v1alpha1.ServerList{},
+				Managed: &v1alpha1.Server{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.InitProvider.ApplyTo[i3].Server")
+		}
+		mg.Spec.InitProvider.ApplyTo[i3].Server = reference.ToFloatPtrValue(rsp.ResolvedValue)
+		mg.Spec.InitProvider.ApplyTo[i3].ServerRef = rsp.ResolvedReference
+
+	}
+
+	return nil
+}

@@ -23,7 +23,16 @@ type NetworkInitParameters struct {
 	IP *string `json:"ip,omitempty" tf:"ip,omitempty"`
 
 	// ID of the network
+	// +crossplane:generate:reference:type=github.com/transacid/provider-hcloud/apis/network/v1alpha1.Network
 	NetworkID *float64 `json:"networkId,omitempty" tf:"network_id,omitempty"`
+
+	// Reference to a Network in network to populate networkId.
+	// +kubebuilder:validation:Optional
+	NetworkIDRef *v1.Reference `json:"networkIdRef,omitempty" tf:"-"`
+
+	// Selector for a Network in network to populate networkId.
+	// +kubebuilder:validation:Optional
+	NetworkIDSelector *v1.Selector `json:"networkIdSelector,omitempty" tf:"-"`
 }
 
 type NetworkObservation struct {
@@ -54,8 +63,17 @@ type NetworkParameters struct {
 	IP *string `json:"ip,omitempty" tf:"ip,omitempty"`
 
 	// ID of the network
+	// +crossplane:generate:reference:type=github.com/transacid/provider-hcloud/apis/network/v1alpha1.Network
 	// +kubebuilder:validation:Optional
-	NetworkID *float64 `json:"networkId" tf:"network_id,omitempty"`
+	NetworkID *float64 `json:"networkId,omitempty" tf:"network_id,omitempty"`
+
+	// Reference to a Network in network to populate networkId.
+	// +kubebuilder:validation:Optional
+	NetworkIDRef *v1.Reference `json:"networkIdRef,omitempty" tf:"-"`
+
+	// Selector for a Network in network to populate networkId.
+	// +kubebuilder:validation:Optional
+	NetworkIDSelector *v1.Selector `json:"networkIdSelector,omitempty" tf:"-"`
 }
 
 type PublicNetInitParameters struct {
